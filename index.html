@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>灵飞经 · 字帖 — 钟绍京小楷单字检索与临摹</title>
+<meta name="description" content="唐·钟绍京《灵飞经》墨迹本 43 行 685 字，逐字切出、可检索、可生成米字格临摹纸。">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#fcfbf8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="灵飞经">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<svg class="svgdefs" aria-hidden="true" focusable="false"><defs>
+  <filter id="deepen" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  2.4 0 0 0 -0.62" result="a1"/>
+    <feMorphology in="SourceGraphic" operator="dilate" radius="0.45" result="d1"/>
+    <feComposite in="d1" in2="a1" operator="over"/>
+  </filter>
+</defs></svg>
+
+<header class="top">
+  <div class="brand">
+    <h1>灵飞经 <span class="dot">·</span> 字帖</h1>
+    <p class="meta">唐 · 钟绍京（传）　墨迹本 43 行 685 字　大都会艺术博物馆藏</p>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button data-view="search" class="on">查字</button>
+    <button data-view="full">全篇</button>
+    <button data-view="sheet">临摹纸<span id="sheetCount" class="badge zero">0</span></button>
+    <button data-view="about">渊源</button>
+    <button id="deepenBtn" class="inkbtn" title="笔画加粗加深，小字更好认">加深墨色</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ========== 查字 ========== -->
+  <section id="view-search" class="view on">
+    <div class="searchbox">
+      <input id="q" type="text" placeholder="输入一个字，如：靈、道、神、飛" autocomplete="off" spellcheck="false">
+      <span class="tip">全篇共 <b id="nUniq">348</b> 个不同字形，点下方任意一字即可放大临摹</span>
+    </div>
+
+    <div id="detail" class="detail hidden"></div>
+
+    <h3 class="sec">字库 <small>按出现次数排序</small></h3>
+    <div class="char-index" id="index"></div>
+  </section>
+
+  <!-- ========== 全篇 ========== -->
+  <section id="view-full" class="view">
+    <div class="full-bar">
+      <div class="seg" id="fullMode">
+        <button data-mode="char" class="on">单字本</button>
+        <button data-mode="scan">原帖影印</button>
+      </div>
+      <label class="sw"><input type="checkbox" id="showText"> 显示释文</label>
+      <label class="sw" id="zoomWrap">字大小
+        <input type="range" id="zoom" min="40" max="120" value="60">
+      </label>
+      <span class="tip" id="fullTip">右键/点击字可查看单字</span>
+    </div>
+    <div class="fulltext" id="fulltext"></div>
+  </section>
+
+  <!-- ========== 临摹纸 ========== -->
+  <section id="view-sheet" class="view">
+    <div class="print-head">
+      <span class="ph-title">灵飞经 · 临摹纸</span>
+      <span class="ph-line">姓名 ____________　日期 ____________</span>
+    </div>
+
+    <div class="sheet-bar">
+      <div class="row">
+        <span class="lbl">已选 <b id="sheetN">0</b> 字</span>
+        <button class="ghost" id="clearSheet">清空</button>
+      </div>
+      <div class="row">
+        <label class="lbl">每字描红 <input type="number" id="traceN" value="3" min="0" max="9"></label>
+        <label class="lbl">空白格 <input type="number" id="blankN" value="2" min="0" max="9"></label>
+        <label><input type="checkbox" id="gridOn" checked> 米字格</label>
+        <label><input type="checkbox" id="traceOn" checked> 描红</label>
+        <button id="printBtn">打印 / 存 PDF</button>
+      </div>
+    </div>
+
+    <div id="sheetEmpty" class="empty">
+      还没有选字。回「查字」页搜一个字，点「加入临摹纸」，这里就会排成练习纸。
+    </div>
+    <div class="sheet" id="sheet"></div>
+  </section>
+
+  <!-- ========== 渊源 ========== -->
+  <section id="view-about" class="view">
+    <div class="about-head">
+      <figure class="portrait">
+        <img src="img/zhongshaojing.webp" alt="《灵飞经》他本一页">
+        <figcaption>《灵飞经》他本一页 · 存西方白帝君存思法（公有领域）</figcaption>
+      </figure>
+      <div class="bio">
+        <h2>钟绍京 <small>659 — 746</small></h2>
+        <p>字可大，虔州赣县（今江西赣州）人。三国魏太傅钟繇之后，世称「小钟」（钟繇为「大钟」）。
+           以善书入仕，历官司农录事、中书令，封越国公。相传唐隆年间以苑总监参与平定韦后之乱，
+           功成之后辞让封赏，时论高之。</p>
+        <p>其书专精小楷，笔法严整而气息清远，是唐代写经小楷最具代表性的一家。
+           《灵飞经》墨迹本流传至今，被视为小楷入门的极则——既守法度，又有唐人写经特有的松活。</p>
+        <p class="note">补一句：本站这部四十三行本只是《灵飞经》全篇的一小段（序与受持法），
+           并不含后面六甲存思的部分。左边这页出自另一传本，正是四十三行本没有的「西方白帝君」一节，
+           可以拿来对照全篇的规模。</p>
+      </div>
+    </div>
+
+    <h3 class="sec">传世与相关作品</h3>
+    <div class="works">
+      <article class="work">
+        <h4>《灵飞经》四十三行墨迹本</h4>
+        <p>今藏纽约大都会艺术博物馆，即本站全部单字的出处。清宫旧藏，后经翁氏家族递藏。
+           纸本墨迹，唐开元间写经小楷，43 行、685 字。笔画瘦劲而转折圆活，是存世最精的唐人写经之一。</p>
+        <p class="src">本站主体 · <a href="https://commons.wikimedia.org/wiki/Category:Spiritual_Flight_Sutra" target="_blank" rel="noopener">维基共享资源高清扫描</a></p>
+      </article>
+      <article class="work">
+        <h4>《灵飞经》渤海藏真帖本（清拓）</h4>
+        <p>清人刻入《渤海藏真帖》，是墨迹本之外最重要的传本。刻本笔画略瘦、锋颖更露，
+           与墨迹本对看，最能看出原帖用笔的起收与轻重。习小楷者常两本互参。</p>
+        <p class="src">参考 · <a href="https://old.shuge.org/ebook/bo-hai-cang-zhen-tie/" target="_blank" rel="noopener">书格《渤海藏真帖》</a></p>
+      </article>
+      <article class="work">
+        <h4>《转轮圣王经》卷</h4>
+        <p>传钟绍京书，唐写经小楷长卷，风格与《灵飞经》一脉相承：结体紧结、行气匀净。
+           敦煌遗书中另有同名写卷，可参看唐代写经的整体面貌。</p>
+        <p class="src">参考 · <a href="https://zhijing.art/zhongshaojing-zhuan-lun-sheng-wang-jing.html" target="_blank" rel="noopener">中华珍宝馆著录</a></p>
+      </article>
+    </div>
+
+    <h3 class="sec">临习顺序建议</h3>
+    <ol class="steps">
+      <li>先用本站「查字」把全篇 348 个字形通看一遍，认结构、记字形。</li>
+      <li>挑 8–12 个常用字加入「临摹纸」，按「示范—描红—空白」练手感，一个字写到三遍不走样再换。</li>
+      <li>回「全篇」用「原帖影印」对照原帖看整行行气，再用「单字本」逐字放大校对。</li>
+      <li>有余力再参《渤海藏真帖》刻本，比较刻本与墨迹的异同。</li>
+    </ol>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="footnote">
+    图像源：The Metropolitan Museum of Art（公有领域），逐字切割自原帖高清扫描。
+    本页为本地静态工具，单字检索 / 临摹 / 打印均在本机完成。<br>
+    <a href="灵飞经字帖.pdf" style="color:var(--red);border-bottom:1px solid rgba(178,58,43,.3)">下载离线 PDF 版（18 页，可存进「图书」离线看）</a>
+  </p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+  // 离线缓存：只有在 https 或 localhost 下才生效（直接双击打开、或局域网 http 时会自动跳过，不影响使用）
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+</script>
+</body>
+</html>
